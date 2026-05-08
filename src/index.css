@@ -17,9 +17,27 @@ body,
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Prevent iOS bounce/scroll and double-tap zoom */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
 }
 
 body {
   background: #1a1a2e;
   color: #e0e0e0;
+  /* Respect notch/home indicator safe areas */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Allow scrolling only inside the drawer content */
+.drawer-content {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent text selection during canvas drag */
+canvas {
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
 }

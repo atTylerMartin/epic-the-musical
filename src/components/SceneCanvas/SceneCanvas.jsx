@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
 import { Stage, Layer, Image as KonvaImage } from 'react-konva';
 import useSceneStore from '../../store/useSceneStore';
-import { useStageSize, DRAWER_WIDTH } from '../../hooks/useStageSize';
+import { useStageSize, DRAWER_WIDTH, useIsMobile } from '../../hooks/useStageSize';
 import CanvasItem from './CanvasItem';
 import CharacterItem from './CharacterItem';
 import HorseItem from './HorseItem';
@@ -40,6 +40,7 @@ function rectsOverlap(a, b, margin = 0) {
 
 function SceneCanvas({ stageRef }) {
   const stageSize = useStageSize();
+  const isMobile = useIsMobile();
   const currentBackground = useSceneStore((s) => s.currentBackground);
   const canvasItems = useSceneStore((s) => s.canvasItems);
   const drawerOpen = useSceneStore((s) => s.drawerOpen);
@@ -180,14 +181,15 @@ function SceneCanvas({ stageRef }) {
         <div
           style={{
             position: 'absolute',
-            bottom: '16px',
-            left: '16px',
+            bottom: isMobile ? '72px' : '16px',
+            left: isMobile ? '12px' : '16px',
+            right: isMobile ? '12px' : 'auto',
             background: '#533483',
-            padding: '12px 16px',
-            borderRadius: '4px',
+            padding: '10px 14px',
+            borderRadius: '8px',
             display: 'flex',
             alignItems: 'center',
-            gap: '12px',
+            gap: '10px',
             zIndex: 50,
           }}
         >
@@ -201,9 +203,9 @@ function SceneCanvas({ stageRef }) {
             step="0.05"
             value={selectedItem.scaleX}
             onChange={(e) => handleScaleChange(e.target.value)}
-            style={{ width: '150px', cursor: 'pointer' }}
+            style={{ flex: 1, minWidth: '80px', cursor: 'pointer' }}
           />
-          <span style={{ color: '#e0e0e0', fontSize: '12px', minWidth: '40px' }}>
+          <span style={{ color: '#e0e0e0', fontSize: '12px', minWidth: '36px', textAlign: 'right' }}>
             {(selectedItem.scaleX * 100).toFixed(0)}%
           </span>
         </div>

@@ -1,15 +1,17 @@
 import useSceneStore from '../../store/useSceneStore';
 import { characters } from '../../assets/manifest';
+import { useIsMobile } from '../../hooks/useStageSize';
 
 function CharactersTab() {
   const usedCharacterIds = useSceneStore((s) => s.usedCharacterIds);
   const addCharacter = useSceneStore((s) => s.addCharacter);
+  const isMobile = useIsMobile();
 
   return (
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(1, 1fr)',
+        gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(1, 1fr)',
         gap: '8px',
       }}
     >
@@ -36,7 +38,7 @@ function CharactersTab() {
             <div
               style={{
                 width: '100%',
-                height: '140px',
+                height: isMobile ? '100px' : '140px',
                 overflow: 'hidden',
                 background: '#1a1a2e',
                 flexShrink: 0,
@@ -47,7 +49,7 @@ function CharactersTab() {
                 alt={char.label}
                 style={{
                   width: '100%',
-                  height: '140px',
+                  height: '100%',
                   objectFit: 'cover',
                   objectPosition: 'top center',
                   display: 'block',
@@ -58,7 +60,7 @@ function CharactersTab() {
                 }}
               />
             </div>
-            <div style={{ padding: '8px', fontSize: '12px', textAlign: 'center', background: '#0a1f3a' }}>
+            <div style={{ padding: '6px 4px', fontSize: '12px', textAlign: 'center', background: '#0a1f3a' }}>
               {char.label}
             </div>
           </button>

@@ -144,7 +144,8 @@ const useSceneStore = create((set, get) => ({
   attachPropToCharacter: (propItemId, characterItemId, offsetX, offsetY) =>
     set((state) => {
       const prop = state.canvasItems.find((i) => i.id === propItemId);
-      if (!prop) return state;
+      const character = state.canvasItems.find((i) => i.id === characterItemId);
+      if (!prop || !character) return state;
       return {
         canvasItems: state.canvasItems
           .filter((i) => i.id !== propItemId)
@@ -160,8 +161,10 @@ const useSceneStore = create((set, get) => ({
                       src: prop.src,
                       offsetX,
                       offsetY,
-                      scaleX: prop.scaleX,
-                      scaleY: prop.scaleY,
+                      // Divide by character scale so the prop keeps the same visual size
+                      // inside the Group (which already applies character's scale).
+                      scaleX: prop.scaleX / character.scaleX,
+                      scaleY: prop.scaleY / character.scaleY,
                       rotation: prop.rotation,
                     },
                   ],

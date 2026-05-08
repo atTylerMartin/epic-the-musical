@@ -29,13 +29,12 @@ function BackgroundImage({ src, width, height }) {
   );
 }
 
-function rectsOverlap(a, b) {
-  const margin = 40;
+function rectsOverlap(a, b, margin = 0) {
   return !(
-    a.x + a.width - margin < b.x + margin ||
-    b.x + b.width - margin < a.x + margin ||
-    a.y + a.height - margin < b.y + margin ||
-    b.y + b.height - margin < a.y + margin
+    a.x + a.width + margin < b.x ||
+    b.x + b.width + margin < a.x ||
+    a.y + a.height + margin < b.y ||
+    b.y + b.height + margin < a.y
   );
 }
 
@@ -75,7 +74,7 @@ function SceneCanvas({ stageRef }) {
           const charNode = stageRef.current.findOne(`#${character.id}`);
           if (charNode) {
             const charRect = charNode.getClientRect({ relativeTo: stageRef.current });
-            if (rectsOverlap(draggedRect, charRect)) {
+            if (rectsOverlap(draggedRect, charRect, 80)) {
               const dropX = e.target.x();
               const dropY = e.target.y();
               const offsetX = (dropX - character.x) / character.scaleX;
